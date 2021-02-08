@@ -1,36 +1,42 @@
 #!/usr/bin/env node
 
-"use strict";
+'use strict';
 
-const fs = require("fs");
+const fs = require('fs');
 
-const srcIndex = process.argv.indexOf("--src");
-let srcDir = "./src";
+const srcIndex = process.argv.indexOf('--src');
+let srcDir = './src';
 if (srcIndex > -1) {
   srcDir = process.argv[srcIndex + 1];
 }
 
-const outIndex = process.argv.indexOf("--out");
-let outDir = "./src/language";
+const cheerioXmlModeParam = process.argv.indexOf('--xmlMode');
+let cheerioXmlMode = '';
+if (cheerioXmlModeParam > -1) {
+  cheerioXmlMode = '--xmlMode true';
+}
+
+const outIndex = process.argv.indexOf('--out');
+let outDir = './src/language';
 if (outIndex > -1) {
   outDir = process.argv[outIndex + 1];
 }
 
-const localesIndex = process.argv.indexOf("--locales");
-let locales = "en_US";
+const localesIndex = process.argv.indexOf('--locales');
+let locales = 'en_US';
 if (localesIndex > -1) {
   locales = process.argv[localesIndex + 1];
-  locales = locales.split(",").map((l) => l.trim());
+  locales = locales.split(',').map((l) => l.trim());
 }
 
 const potPath = `${outDir}/messages.pot`;
 console.log(`Source directory directory: ${srcDir}`);
 console.log(`Output directory: ${srcDir}`);
 console.log(`Locales: ${locales}`);
-console.log("");
+console.log('');
 
 function execShellCommand(cmd) {
-  const exec = require("child_process").exec;
+  const exec = require('child_process').exec;
   return new Promise((resolve, reject) => {
     exec(cmd, (error, stdout, stderr) => {
       if (error) {
@@ -42,13 +48,13 @@ function execShellCommand(cmd) {
 }
 
 (async () => {
-  const files = await execShellCommand(`find ${srcDir} -name '*.js' -o -name '*.vue' 2> /dev/null`);
+  const files = await execShellCommand(`find ${srcDir} -name '*.js' -o -name '*.vue'`);
 
   if (!fs.existsSync(outDir)) {
     fs.mkdirSync(outDir, { recursive: true });
   }
   const extracted = await execShellCommand(
-    `gettext-extract --attribute v-translate --output ${potPath} ${files.split("\n").join(" ")}`,
+    `gettext-extract ${cheerioXmlMode} --attribute v-translate --output ${potPath} ${files.split('\n').join(' ')}`,
   );
   fs.chmodSync(potPath, 0o666);
   console.log(extracted);
