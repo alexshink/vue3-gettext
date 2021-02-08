@@ -33,7 +33,7 @@
   },
   "peerDependencies": {
     "vue": "^3.0.0",
-    "easygettext": "github:alexshink/easygettext"
+    "easygettext": "https://github.com/alexshink/easygettext"
   },
   "devDependencies": {
     "@types/jest": "^26.0.15",
@@ -41,7 +41,7 @@
     "@typescript-eslint/parser": "^4.9.0",
     "@vue/test-utils": "^2.0.0-beta.6",
     "date-fns": "^2.16.1",
-    "easygettext": "github:alexshink/easygettext",
+    "easygettext": "https://github.com/alexshink/easygettext",
     "eslint": "^7.14.0",
     "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-vue": "^7.1.0",
