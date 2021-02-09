@@ -12,12 +12,10 @@ Translate [Vue.js](http://vuejs.org) applications with [gettext](https://en.wiki
 - [Message extraction and compilation](#message-extraction-and-compilation)
 - [Dependencies](#Dependencies)
 
-- [Dependencies](#what-does-vue3-gettext-depend-on)
-
 ## Installation
 
 ```shell
-npm i @jshmrtn/vue3-gettext
+npm i git://github.com/alexshink/vue3-gettext.git#caf33d241e10b213ff247d99e560259833b8d7f8
 ```
 
 ```javascript
