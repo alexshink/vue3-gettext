@@ -3,16 +3,17 @@
 "use strict";
 
 const fs = require("fs");
+const localesData = require('../../../../languages.json');
 
 const outIndex = process.argv.indexOf("--dir");
 let outDir = "./src/language";
 if (outIndex > -1) {
   outDir = process.argv[outIndex + 1];
 }
-const localesIndex = process.argv.indexOf("--locales");
-let locales = "en_US";
-if (localesIndex > -1) {
-  locales = process.argv[localesIndex + 1];
+const localesArgumentIndex = process.argv.indexOf("--locales");
+let locales = Object.keys(localesData);
+if (localesArgumentIndex > -1) {
+  locales = process.argv[localesArgumentIndex + 1];
   locales = locales.split(",").map((l) => l.trim());
 }
 
