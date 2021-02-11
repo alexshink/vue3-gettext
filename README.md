@@ -15,7 +15,7 @@ Translate [Vue.js](http://vuejs.org) applications with [gettext](https://en.wiki
 ## Installation
 
 ```shell
-npm i git://github.com/alexshink/vue3-gettext.git#c787819112eb2e36587aa4997f9cca019f843c64
+npm i git://github.com/alexshink/vue3-gettext.git#4bbe2ed9f0ce1ba7d8cf1dc05cf4795fbb4b9abb
 ```
 
 ```javascript
