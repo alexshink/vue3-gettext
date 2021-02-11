@@ -3,7 +3,7 @@
 "use strict";
 
 const fs = require("fs");
-const localesData = require('../../../../languages.json');
+const localesData = require('../../../../locales/languages.json');
 
 const outIndex = process.argv.indexOf("--dir");
 let outDir = "./src/language";
