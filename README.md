@@ -12,6 +12,21 @@ Translate [Vue.js](http://vuejs.org) applications with [gettext](https://en.wiki
 - [Message extraction and compilation](#message-extraction-and-compilation)
 - [Dependencies](#Dependencies)
 
+## :warning: Start with
+
+To work correctly, you need to update `NPM` to version` 7+`.
+For Windows, you can simply update Node.js to the latest stable version, or any other `15 +` version.
+
+This is directly related to the fact that `3 ≤ npm version < 7` doesn't support installing `peerDependencies`.
+
+Before using the extract or compilation, in the root of the project, you need to create a `locales` folder with the `languages.json` file, where you describe a list of all languages used:
+```json
+{
+  "ru_RU": "Русский",
+  "en_US": "English"
+}
+```
+
 ## Installation
 
 ```shell
@@ -19,20 +34,20 @@ npm i git://github.com/alexshink/vue3-gettext.git#4bbe2ed9f0ce1ba7d8cf1dc05cf479
 ```
 
 ```javascript
-import { createGettext } from "@jshmrtn/vue3-gettext";
-import { createApp } from "vue";
-import translations from "./path/to/translations.json";
+import { createApp } from 'vue';
+import { createGettext } from '@jshmrtn/vue3-gettext';
+import translations from './../locales/translations.json';
+import languages from './../locales/languages.json';
 
 const gettext = createGettext({
-  availableLanguages: {
-    en_GB: "British English",
-  },
-  defaultLanguage: "en_GB",
-  translations,
+  availableLanguages: languages,
+  defaultLanguage: 'en_US',
+  translations
 });
 
-const app = createApp(App);
-app.use(gettext);
+createApp(App)
+  .use(gettext)
+  .mount('#app')
 ```
 
 ## Basic usage
@@ -49,24 +64,24 @@ Or inject the plugin using `useGettext` (Example of a language switcher):
 
 ```vue
 <template>
-  <div>
+  <div class="language-switcher">
     <select v-model="language.current">
-      <option v-for="(language, key) in language.availableLanguages" :key="key" :value="key">{{ language }}</option>
+      <option v-for="(language, key) in language.available" :key="key" :value="key">{{ language }}</option>
     </select>
   </div>
 </template>
 
 <script>
-import { useGettext } from "@jshmrtn/vue3-gettext";
+import { useGettext } from '@jshmrtn/vue3-gettext';
 
 export default {
-  setup() {
-    const language = useGettext();
+  name: 'LanguageSwitcher',
+  data() {
     return {
-      ...language,
-    };
-  },
-};
+      language: useGettext()
+    }
+  }
+}
 </script>
 ```
 
@@ -98,9 +113,9 @@ An object that represents the list of the available languages for the app whose 
 
 ```javascript
 availableLanguages: {
-  en_GB: "British English",
-  fr_FR: "Français",
-  it_IT: "Italiano",
+  en_GB: 'British English',
+  fr_FR: 'Français',
+  it_IT: 'Italiano',
 },
 ```
 
@@ -115,7 +130,7 @@ The [**local name**](http://www.localeplanet.com/icu/) of the default language, 
 #### Example
 
 ```javascript
-defaultLanguage: 'en_GB',
+defaultLanguage: 'ru_RU',
 ```
 
 ### `translations`
@@ -194,26 +209,23 @@ Default: `true`
 Registers the `<translate>` component on you application. If you disable this option and want to provide the component yourself, you must make sure to name it `translate` otherwise extraction will fail.
 
 ### Full configuration example:
-
 ```javascript
-import { createGettext } from "@jshmrtn/vue3-gettext";
-import { createApp } from "vue";
-import translations from "./path/to/translations.json";
+import { createApp } from 'vue';
+import { createGettext } from '@jshmrtn/vue3-gettext';
+import translations from './../locales/translations.json';
+import languages from './../locales/languages.json';
 
 const gettext = createGettext({
-  availableLanguages: {
-    en_GB: "British English",
-    fr_FR: "Français",
-    it_IT: "Italiano",
-  },
-  defaultLanguage: "en_GB",
-  mutedLanguages: ["fr_FR"]
+  availableLanguages: languages,
+  defaultLanguage: 'en_US',
+  mutedLanguages: ['fr_FR'],
   translations,
-  silent: true,
+  silent: true
 });
 
-const app = createApp(App);
-app.use(gettext);
+createApp(App)
+  .use(gettext)
+  .mount('#app')
 ```
 
 ## Dependencies
@@ -242,7 +254,15 @@ The extract script will create an output directory containing a `.pot` file, dir
 
 You may set a source directory to extract messages from, an output directory and a comma separated list of all the locales in your application.
 
-Example call:
+By default, if you do not specify a list of locales, work is performed with all languages specified in the `languages.json` file.
+
+Extract for all languages:
+
+```sh
+vue-gettext-extract --src ./src --out ./src/language
+```
+
+Extract for specified languages only:
 
 ```sh
 vue-gettext-extract --src ./src --out ./src/language --locales "de_CH,en_US"
@@ -252,9 +272,17 @@ vue-gettext-extract --src ./src --out ./src/language --locales "de_CH,en_US"
 
 The compile script will merge the contents of all the `.po` files and combine them into a single `translations.json` file that you can use with `vue3-gettext` (in the `createGettext` function).
 
-You may set the directory where all your locales are located (the `--out` directory of the extract script) and the locales
+You may set the directory where all your locales are located (the `--out` directory of the extract script) and the locales.
 
-Example call:
+By default, if you do not specify a list of locales, work is performed with all languages specified in the `languages.json` file.
+
+Compile for all languages:
+
+```sh
+vue-gettext-compile --dir ./src/language
+```
+
+Compile for specified languages only:
 
 ```sh
 vue-gettext-compile --dir ./src/language --locales "de_CH,en_US"
@@ -262,14 +290,14 @@ vue-gettext-compile --dir ./src/language --locales "de_CH,en_US"
 
 ## Recommended setup
 
-We recommend setting up the scripts in your `package.json` like this:
+Recommended setting up the scripts in your `package.json`:
 
 ```json
 "scripts": {
-    "gettext": "npm run gettext:extract && npm run gettext:compile",
-    "gettext:extract": "vue-gettext-extract --src ./src --out ./src/language --locales \"de_CH,en_US\"",
-    "gettext:compile": "vue-gettext-compile --dir ./src/language --locales \"de_CH,en_US\""
-  },
+  "gettext": "npm run gettext:extract && npm run gettext:compile",
+  "gettext:extract": "vue-gettext-extract --src ./src --out ./locales",
+  "gettext:compile": "vue-gettext-compile --dir ./locales"
+},
 ```
 
 # Annotating strings in templates (`.html` or `.vue` files)
@@ -452,7 +480,7 @@ Please specify clearly what you changed and why.
 
 # Credits
 
-This plugin heavily relies on the work of the original [`vue-gettext`](https://github.com/Polyconseil/vue-gettext/).
+This plugin heavily relies on the work of the original [`vue3-gettext`](https://github.com/jshmrtn/vue3-gettext).
 
 # License
 
