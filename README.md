@@ -50,6 +50,8 @@ createApp(App)
   .mount('#app')
 ```
 
+After installation, you need to do the first extraction and compilation to create the necessary files.
+
 ## Basic usage
 
 Use the component or directive to annotate translatable strings:
