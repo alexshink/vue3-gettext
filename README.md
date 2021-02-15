@@ -261,13 +261,13 @@ By default, if you do not specify a list of locales, work is performed with all 
 Extract for all languages:
 
 ```sh
-vue-gettext-extract --src ./src --out ./src/language
+vue-gettext-extract --src ./src --out ./locales
 ```
 
 Extract for specified languages only:
 
 ```sh
-vue-gettext-extract --src ./src --out ./src/language --locales "de_CH,en_US"
+vue-gettext-extract --src ./src --out ./locales --locales "de_CH,en_US"
 ```
 
 ## `vue-gettext-compile`
@@ -281,13 +281,13 @@ By default, if you do not specify a list of locales, work is performed with all 
 Compile for all languages:
 
 ```sh
-vue-gettext-compile --dir ./src/language
+vue-gettext-compile --dir ./locales
 ```
 
 Compile for specified languages only:
 
 ```sh
-vue-gettext-compile --dir ./src/language --locales "de_CH,en_US"
+vue-gettext-compile --dir ./locales --locales "de_CH,en_US"
 ```
 
 ## Recommended setup
