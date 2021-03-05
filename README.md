@@ -4,6 +4,7 @@ Translate [Vue.js](http://vuejs.org) applications with [gettext](https://en.wiki
 
 ## Table of contents
 
+- [Start with](#start-with)
 - [Installation](#installation)
 - [Basic usage](#basic-usage)
 - [Workflow](#workflow)
